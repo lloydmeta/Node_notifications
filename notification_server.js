@@ -15,10 +15,10 @@ app.get('/', function (req, res) {
   res.send(404);
 });
 
-app.post('/notifications/:action/:to', function (req, res) {
-  target = connections[req.params.to]
+app.post('/notifications/:action/:user_hash', function (req, res) {
+  target = connections[req.params.user_hash]
   if (target) {
-    user_sockets_array = connections[req.params.to];
+    user_sockets_array = connections[req.params.user_hash];
     for (var i=0; i < user_sockets_array.length; i++){
       console.log("Sending notification to " + user_sockets_array[i].id);
       user_sockets_array[i].emit(req.params.action, req.body);
