@@ -6,7 +6,8 @@
     "author": "Lloyd Meta github.com/lloydmeta",
     "dependencies": {
         "express": ">=3.0",
-        "socket.io": ">=0.9"
+        "socket.io": ">=0.9",
+        "async": ">=0.1.22"
     },
     "engines": {
         "node": ">=0.8"

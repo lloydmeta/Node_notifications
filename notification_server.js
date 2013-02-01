@@ -2,7 +2,8 @@ var express = require('express')
   , app = express()
   , http = require('http')
   , server = http.createServer(app)
-  , io = require('socket.io').listen(server);
+  , io = require('socket.io').listen(server)
+  , async = require('async');
 
 app.use(express.bodyParser());
 server.listen(8000);
@@ -18,10 +19,12 @@ app.post('/notifications/:action/:user_hash', function (req, res) {
   target = connections[req.params.user_hash]
   if (target) {
     user_sockets_array = connections[req.params.user_hash];
-    for (var i=0; i < user_sockets_array.length; i++){
-      console.log("Sending notification to " + user_sockets_array[i].id);
-      user_sockets_array[i].emit(req.params.action, req.body);
-    }
+    async.forEach(user_sockets_array, function(socket, callback){
+      socket.emit(req.params.action, req.body);
+      callback();
+    }, function(err){
+      console.log('Finished');
+    });
     res.send(200);
   }
   else
