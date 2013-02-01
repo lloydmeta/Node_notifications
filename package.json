@@ -1,6 +1,6 @@
 {
-    "name": "petalog_notifications",
-    "description": "Notifications server for Petalog",
+    "name": "simple_node_notifications",
+    "description": "Notifications server in NodeJS",
     "version": "0.0.1",
     "private": true,
     "author": "Lloyd Meta github.com/lloydmeta",
