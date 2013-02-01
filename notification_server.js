@@ -35,14 +35,14 @@ io.sockets.on('connection', function(socket) {
   socket.on('user_hash', function(user_hash) {
     if ((connections[user_hash] === undefined) || !(connections[user_hash] instanceof Array))
     {
-      console.log("New connection[" + user_hash + "] detected, creating new array")
+      console.log("New connection[" + user_hash + "] detected, creating new array");
       connections[user_hash] = [socket];
     }
     else
     {
       if (connections[user_hash].indexOf(user_hash) == -1)
         {
-          console.log("Adding socket to connection[" + user_hash + "]")
+          console.log("Adding socket to connection[" + user_hash + "]");
           connections[user_hash].push(socket);
         }
     }
@@ -52,10 +52,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('disconnect', function(){
     socket.get('user_hash', function(error, user_hash){
       var index_of_socket = connections[user_hash].indexOf(socket);
-      console.log(user_hash + " disconnected.")
+      console.log(user_hash + " disconnected.");
       connections[user_hash].splice(index_of_socket, 1);
       if (connections[user_hash].length == 0){
-        console.log("No more connections for " + user_hash + ". Deleting connection object.")
+        console.log("No more connections for " + user_hash + ". Deleting connection object.");
         delete connections[user_hash];
       }
     })
