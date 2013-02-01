@@ -4,7 +4,6 @@ var express = require('express')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
-
 app.use(express.bodyParser());
 server.listen(8000);
 
@@ -60,6 +59,5 @@ io.sockets.on('connection', function(socket) {
       }
     })
   });
-
 
 });
