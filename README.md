@@ -16,7 +16,7 @@ Example client-side code
 <div id="notifications"></div>
 
 <script>
-var socket = io.connect('nodejshost');
+var socket = io.connect('#{nodejshost}');
 
 // Connectivity
 socket.emit('user_hash', '<%= current_user.dekagraph_as_id %>');
