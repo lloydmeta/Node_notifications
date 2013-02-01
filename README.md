@@ -19,15 +19,15 @@ Example client-side code
 var socket = io.connect('#{nodejshost}');
 
 // Connectivity
-socket.emit('user_hash', '<%= current_user.dekagraph_as_id %>');
+socket.emit('user_hash', '<%= current_user.user_hash %>');
 
 socket.on('reconnect', function () {
   console.log('Reconnected to the server');
-  socket.emit('user_hash', '<%= current_user.dekagraph_as_id %>');
+  socket.emit('user_hash', '<%= current_user.user_hash %>');
 });
 
 socket.on('reconnecting', function () {
-  console.log('user_hash', '<%= current_user.dekagraph_as_id %>');
+  console.log('user_hash', '<%= current_user.user_hash %>');
 });
 
 // Custom Messages
