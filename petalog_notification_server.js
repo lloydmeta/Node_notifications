@@ -6,7 +6,7 @@ var express = require('express')
 
 
 app.use(express.bodyParser());
-app.listen(13002);
+server.listen(8000);
 
 var connections = {}
 
@@ -18,7 +18,11 @@ app.get('/', function (req, res) {
 app.post('/notifications/:action/:to', function (req, res) {
   target = connections[req.params.to]
   if (target) {
-    connections[req.params.to].emit(req.params.action, req.body);
+    user_sockets_array = connections[req.params.to];
+    for (var i=0; i < user_sockets_array.length; i++){
+      console.log("Sending notification to " + user_sockets_array[i].id);
+      user_sockets_array[i].emit(req.params.action, req.body);
+    }
     res.send(200);
   }
   else
@@ -27,8 +31,35 @@ app.post('/notifications/:action/:to', function (req, res) {
 
 /********** socket.io work ***************/
 io.sockets.on('connection', function(socket) {
+
   socket.on('user_hash', function(user_hash) {
-    connections[user_hash] = socket;
+    if ((connections[user_hash] === undefined) || !(connections[user_hash] instanceof Array))
+    {
+      console.log("New connection[" + user_hash + "] detected, creating new array")
+      connections[user_hash] = [socket];
+    }
+    else
+    {
+      if (connections[user_hash].indexOf(user_hash) == -1)
+        {
+          console.log("Adding socket to connection[" + user_hash + "]")
+          connections[user_hash].push(socket);
+        }
+    }
+    socket.set('user_hash', user_hash, function(){});
   });
+
+  socket.on('disconnect', function(){
+    socket.get('user_hash', function(error, user_hash){
+      var index_of_socket = connections[user_hash].indexOf(socket);
+      console.log(user_hash + " disconnected.")
+      connections[user_hash].splice(index_of_socket, 1);
+      if (connections[user_hash].length == 0){
+        console.log("No more connections for " + user_hash + ". Deleting connection object.")
+        delete connections[user_hash];
+      }
+    })
+  });
+
 
 });
