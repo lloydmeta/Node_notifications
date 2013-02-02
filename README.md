@@ -8,6 +8,40 @@ Simple user-based notifications. Based on [this guide](http://blog.joshsoftware.
 2. `node notifications_server.js`
 3. Profit
 
+Example server-side code
+----------------------
+
+```ruby
+module Sender
+  mattr_accessor :nodejs_host
+  @@nodejs_host = ""
+
+  def self.configure
+    yield self if block_given?
+  end
+
+  def self.notify(action, user_hash, data)
+    url = "#{@@nodejs_host}/notifications/#{action}/#{user_hash}"
+    response = Net::HTTP.post_form(URI.parse(URI.encode(url)), data)
+
+    # 200 implies successfully sent.
+    # There is nothing we can do if the targe user is not online(404)
+    # For any other error, raise Exception
+    unless ["200", "404"].include? response.code
+      raise NodeNotifier::Exception.new(response.code, response.body)
+    end
+  end
+
+end
+
+Sender.configure do |config|
+  config.nodejs_host = "http://nodjs-server.com"
+end
+
+# On comment (e.g. in an observer)
+Sender.notify("comment", user.user_hash, {user.notification_count})
+```
+
 Example client-side code
 ----------------------
 
