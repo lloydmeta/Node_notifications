@@ -1,9 +1,12 @@
+require('newrelic');
+
 var express = require('express')
   , app = express()
   , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server)
   , async = require('async');
+
 
 app.use(express.bodyParser());
 server.listen(8000);
