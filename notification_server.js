@@ -7,9 +7,10 @@ var express = require('express')
   , io = require('socket.io').listen(server)
   , async = require('async');
 
+  var port = process.env.PORT || 8000;
 
 app.use(express.bodyParser());
-server.listen(8000);
+server.listen(port);
 
 var connections = {}
 
