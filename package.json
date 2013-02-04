@@ -7,7 +7,8 @@
     "dependencies": {
         "express": ">=3.0",
         "socket.io": ">=0.9",
-        "async": ">=0.1.22"
+        "async": ">=0.1.22",
+        "newrelic": ">=0.9"
     },
     "engines": {
         "node": ">=0.8"

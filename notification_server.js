@@ -15,6 +15,10 @@ app.get('/', function (req, res) {
   res.send(404);
 });
 
+app.get('/ping', function (req, res) {
+  res.send(200);
+});
+
 app.post('/notifications/:action/:user_hash', function (req, res) {
   target = connections[req.params.user_hash]
   if (target) {
